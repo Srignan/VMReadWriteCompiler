@@ -1,0 +1,23 @@
+# run commands after make
+
+sudo insmod shared_buffer.ko
+sudo insmod pa2_in.ko
+sudo insmod pa2_out.ko
+
+cat /proc/devices | grep pa2_in
+--- 238 pa2_in  # output of above line
+cat /proc/devices | grep pa2_out
+--- 237 pa2_out # output of above line
+
+sudo mknod /dev/pa2_in c 238 0  # 238 is from output of previous command
+sudo mknod /dev/pa2_out c 237 0
+
+sudo chmod 666 /dev/pa2_in
+sudo chmod 666 /dev/pa2_out
+
+python3 test.py as well as any other tests
+
+
+Notes:
+The shared_buffer handles the synchronization
+You have to run the commands above after make because the load order messes it up when trying to use make commands.
